@@ -1,0 +1,22 @@
+﻿  main.cpp
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\lsb.h(13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(48): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(65): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(66): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(87): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(123): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(126): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(118): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(136): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(146): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(177): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(264): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(68): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(69): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(74): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(207): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(208): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(213): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\dct.h(239): warning C4101: 'pixelPtr': unreferenced local variable
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(45): warning C4715: 'getFirstGreaterKey': not all control paths return a value
+  StegoAlgorithms.vcxproj -> C:\Users\Alex\StegoAlgorithms\StegoAlgorithms\x64\Debug\StegoAlgorithms.exe

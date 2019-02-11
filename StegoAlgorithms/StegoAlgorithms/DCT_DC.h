@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseIncludes.h"
-#include <iomanip>
 
 int getLastMultipleOf8(int number) {
 	int multiple = 0;
@@ -10,36 +9,14 @@ int getLastMultipleOf8(int number) {
 	return multiple - 8;
 }
 
-//void goodCout(Mat img) {
-//	for (int i = 0; i < img.rows; i++) {
-//		for (int j = 0; j < img.cols; j++) {
-//			cout << setprecision(10) << img.at<float>(i, j) << " ";
-//		}
-//		cout << endl;
-//	}
-//}
-//
-//ofstream fout("helper.txt");
-//ofstream fout2("helper2.txt");
-//void goodFout(Mat img) {
-//	for (int i = 0; i < img.rows; i++) {
-//		for (int j = 0; j < img.cols; j++) {
-//			fout << setprecision(10) << img.at<float>(i, j) << " ";
-//		}
-//		fout << endl;
-//	}
-//}
-
-Mat DCT(Mat coverImage, string secret) {
-	Mat stegoImage, convertImage;
-
-	coverImage.convertTo(convertImage, CV_32FC1, 1.0 / 255);
+cv::Mat DCT_DC(cv::Mat coverImage, string secret) {
+	cv::Mat stegoImage;
 
 	//pad image if needed
 	int leftEdge = getLastMultipleOf8(coverImage.cols);
 	int botEdge = getLastMultipleOf8(coverImage.rows);
 
-	stegoImage = convertImage.clone();
+	stegoImage = coverImage.clone();
 
 	//create secret bits array and augment message with message size
 	vector<int> secretBits;
@@ -62,9 +39,9 @@ Mat DCT(Mat coverImage, string secret) {
 	int bitIndex = 0;
 	for (i = 0; i < botEdge && bitIndex < secretBits.size(); i += 8) {
 		for (j = 0; j < leftEdge && bitIndex < secretBits.size(); j += 8) {
-			Mat block = stegoImage(Rect(j, i, 8, 8));
-			Mat dctBlock;
-			dct(block, dctBlock);
+			cv::Mat block = stegoImage(cv::Rect(j, i, 8, 8));
+			cv::Mat dctBlock;
+			cv::dct(block, dctBlock);
 			l = 1;
 			for (k = 0; k < 8 && bitIndex < secretBits.size(); k++) {
 				for (l; l < 8 - k && bitIndex < secretBits.size(); l++) {
@@ -84,17 +61,17 @@ Mat DCT(Mat coverImage, string secret) {
 				l = 0;
 			}
 
-			dct(dctBlock, block, DCT_INVERSE);
-			block.copyTo(stegoImage(Rect(j, i, 8, 8)));
+			cv::dct(dctBlock, block, cv::DCT_INVERSE);
+			block.copyTo(stegoImage(cv::Rect(j, i, 8, 8)));
 		}
 	}
 
 	return stegoImage;
 }
 
-void DCTdisembed(Mat stegoImage, size_t size) {
+void DCT_DCDisembed(cv::Mat stegoImage, size_t size) {
 
-	Mat block, dctBlock;
+	cv::Mat block, dctBlock;
 	int i, j, k, l, index = 0;
 	size_t messageLength;
 	bitset<32> messageLengthBits;
@@ -114,8 +91,8 @@ void DCTdisembed(Mat stegoImage, size_t size) {
 
 	for (i = 0; i < botEdge && index < messageLength; i += 8) {
 		for (j = 0; j < leftEdge && index < messageLength; j += 8) {
-			block = stegoImage(Rect(j, i, 8, 8));
-			dct(block, dctBlock);
+			block = stegoImage(cv::Rect(j, i, 8, 8));
+			cv::dct(block, dctBlock);
 			l = 1;
 			for (k = 0; k < 8 && index < messageLength; k++) {
 				for (l; l < 8 - k && index < messageLength; l++) {
@@ -143,16 +120,16 @@ void DCTdisembed(Mat stegoImage, size_t size) {
 		cout << (uchar)letter.to_ulong();
 		letter = bitset<8>(0);
 	}
+	cout << endl;
 }
 
-Mat DCT(Mat coverImage, Mat secret) {
-	Mat stegoImage, convertImage;
+cv::Mat DCT_DC(cv::Mat coverImage, cv::Mat secret) {
+	cv::Mat stegoImage;
 
-	coverImage.convertTo(convertImage, CV_32FC1, 1.0 / 255);
 	int leftEdge = getLastMultipleOf8(coverImage.cols);
 	int botEdge = getLastMultipleOf8(coverImage.rows);
 
-	stegoImage = convertImage.clone();
+	stegoImage = coverImage.clone();
 
 	//create secret bits array and augment message with message size
 	vector<int> secretBits;
@@ -181,9 +158,9 @@ Mat DCT(Mat coverImage, Mat secret) {
 	int bitIndex = 0;
 	for (i = 0; i < botEdge && bitIndex < secretBits.size(); i += 8) {
 		for (j = 0; j < leftEdge && bitIndex < secretBits.size(); j += 8) {
-			Mat block = stegoImage(Rect(j, i, 8, 8));
-			Mat dctBlock;
-			dct(block, dctBlock);
+			cv::Mat block = stegoImage(cv::Rect(j, i, 8, 8));
+			cv::Mat dctBlock;
+			cv::dct(block, dctBlock);
 			l = 1;
 			for (k = 0; k < 8 & bitIndex < secretBits.size(); k++) {
 				for (l; l < 8 - k & bitIndex < secretBits.size(); l++) {
@@ -203,16 +180,16 @@ Mat DCT(Mat coverImage, Mat secret) {
 				l = 0;
 			}
 
-			dct(dctBlock, block, DCT_INVERSE);
-			block.copyTo(stegoImage(Rect(j, i, 8, 8)));
+			cv::dct(dctBlock, block, cv::DCT_INVERSE);
+			block.copyTo(stegoImage(cv::Rect(j, i, 8, 8)));
 		}
 	}
 
 	return stegoImage;
 }
 
-void DCTdisembed(Mat stegoImage, int rows, int cols) {
-	Mat block, dctBlock;
+void DCT_DCDisembed(cv::Mat stegoImage, int rows, int cols) {
+	cv::Mat block, dctBlock;
 	int i, j, k = 0, l, index = 0;
 	size_t messageLength;
 	bitset<64> messageLengthBits;
@@ -234,8 +211,8 @@ void DCTdisembed(Mat stegoImage, int rows, int cols) {
 
 	for (i = 0; i < botEdge && index < messageLength; i += 8) {
 		for (j = 0; j < leftEdge && index < messageLength; j += 8) {
-			block = stegoImage(Rect(j, i, 8, 8));
-			dct(block, dctBlock);
+			block = stegoImage(cv::Rect(j, i, 8, 8));
+			cv::dct(block, dctBlock);
 			l = 1;
 			for (k = 0; k < 8 && index < messageLength; k++) {
 				for (l; l < 8 - k && index < messageLength; l++) {
@@ -256,7 +233,7 @@ void DCTdisembed(Mat stegoImage, int rows, int cols) {
 
 	bitset<8> letter = bitset<8>(0);
 	index = 0;
-	Mat receivedImage(rows, cols, CV_8UC1);
+	cv::Mat receivedImage(rows, cols, CV_8UC1);
 	for (i = 0; i < rows && index < messageBits.size(); i++) {
 		for (j = 0; j < cols && index < messageBits.size(); j++) {
 			for (k = 0; k < 8 && index < messageBits.size(); k++) {
@@ -267,5 +244,6 @@ void DCTdisembed(Mat stegoImage, int rows, int cols) {
 			letter = bitset<8>(0);
 		}
 	}
-	imshow("wow1", receivedImage);
+	cv::namedWindow("received image");
+	cv::imshow("received image", receivedImage);
 }

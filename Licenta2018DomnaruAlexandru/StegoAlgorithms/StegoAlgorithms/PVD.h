@@ -1,34 +1,42 @@
 #pragma once
 #include "BaseIncludes.h"
 #include <map>
-#include <cmath>
 
-std::map<int, int> quantizationTable = {
-	{0, 7},
-	{8, 15},
-	{16, 31},
-	{32, 63},
-	{64, 127},
-	{128, 255}
-};
+std::map<int, int> quantizationTable;
 
-/*	{0, 15},
-	{16, 23},
-	{24, 31},
-	{32, 47},
-	{48, 63},
-	{64, 79},
-	{80, 95},
-	{96, 103},
-	{104, 111},
-	{112, 119},
-	{120, 127},
-	{128, 135},
-	{136, 143},
-	{144, 151},
-	{152, 159},
-	{160, 191},
-	{192, 255}*/
+void initializeQuantizationTable(int quantTableFlag) {
+	if (quantTableFlag == 1) {
+		quantizationTable = {
+			{0, 7},
+			{8, 15},
+			{16, 31},
+			{32, 63},
+			{64, 127},
+			{128, 255}
+		};
+	}
+	else if (quantTableFlag == 2) {
+		quantizationTable = {
+			{0, 15},
+			{16, 23},
+			{24, 31},
+			{32, 47},
+			{48, 63},
+			{64, 79},
+			{80, 95},
+			{96, 103},
+			{104, 111},
+			{112, 119},
+			{120, 127},
+			{128, 135},
+			{136, 143},
+			{144, 151},
+			{152, 159},
+			{160, 191},
+			{192, 255}
+		};
+	}
+}
 
 int getFirstGreaterKey(map<int, int> map, int val) {
 
@@ -81,9 +89,9 @@ tuple<int, int> getPixelValues(int g_i1, int g_i2, double m, bool isOdd) {
 }
 
 ofstream fout3("helper.txt");
-Mat PVDembed(Mat coverImage, string secret) {
-	//read image
-	Mat stegoImage = coverImage.clone();
+cv::Mat PVDembed(cv::Mat coverImage, string secret, int quantTableFlag) {
+	initializeQuantizationTable(quantTableFlag);
+	cv::Mat stegoImage = coverImage.clone();
 
 	size_t rows = getLastMultipleOf2(coverImage.rows);
 	size_t cols = getLastMultipleOf2(coverImage.cols);
@@ -146,8 +154,8 @@ Mat PVDembed(Mat coverImage, string secret) {
 	return stegoImage;
 }
 
-void PVDdisembed(cv::Mat stegoImage) {
-
+void PVDdisembed(cv::Mat stegoImage, int quantTableFlag) {
+	initializeQuantizationTable(quantTableFlag);
 	size_t rows = getLastMultipleOf2(stegoImage.rows);
 	size_t cols = getLastMultipleOf2(stegoImage.cols);
 
@@ -200,7 +208,7 @@ void PVDdisembed(cv::Mat stegoImage) {
 	messageLength *= 8;
 	messageLength -= secretBits.size();
 	int pixelCount = 0;
-	
+
 	for (i; i < rows && pixelCount < messageLength; ++i) {
 		for (j; j < cols && pixelCount < messageLength; j += 2) {
 			pixelPtr = stegoImage.ptr<uchar>(i, j);
@@ -240,4 +248,5 @@ void PVDdisembed(cv::Mat stegoImage) {
 		cout << (uchar)letter.to_ulong();
 		letter = bitset<8>(0);
 	}
+	cout << endl;
 }

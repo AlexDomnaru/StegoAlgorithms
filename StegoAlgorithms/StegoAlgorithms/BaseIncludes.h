@@ -11,5 +11,4 @@
 #include <algorithm> 
 #include <vector> 
 
-using namespace cv;
 using namespace std;

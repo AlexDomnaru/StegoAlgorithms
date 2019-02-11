@@ -1,10 +1,9 @@
 #pragma once
 #include "BaseIncludes.h"
-#include <tuple>
 
-Mat LSBembed(Mat coverImage, string secret, int lsbNum) {
+cv::Mat LSBembed(cv::Mat coverImage, string secret, int lsbNum) {
 
-	Mat stegoImage = coverImage.clone();
+	cv::Mat stegoImage = coverImage.clone();
 
 	size_t rows = coverImage.rows;
 	size_t cols = coverImage.cols;
@@ -88,4 +87,5 @@ void LSBdisembed(cv::Mat stegoImage, int lsbNum) {
 		cout << (uchar)letter.to_ulong();
 		letter = bitset<8>(0);
 	}
+	cout << endl;
 }

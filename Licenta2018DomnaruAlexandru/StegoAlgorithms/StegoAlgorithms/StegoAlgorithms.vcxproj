@@ -125,7 +125,8 @@
   <ItemGroup>
     <ClInclude Include="Algorithms.h" />
     <ClInclude Include="BaseIncludes.h" />
-    <ClInclude Include="DCT.h" />
+    <ClInclude Include="DCT_AC.h" />
+    <ClInclude Include="DCT_DC.h" />
     <ClInclude Include="EDS.h" />
     <ClInclude Include="LSB.h" />
     <ClInclude Include="Metrics.h" />

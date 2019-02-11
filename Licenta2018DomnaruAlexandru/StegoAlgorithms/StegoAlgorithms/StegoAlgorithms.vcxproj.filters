@@ -26,9 +26,6 @@
     <ClInclude Include="BaseIncludes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DCT.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EDS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -39,6 +36,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Metrics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DCT_DC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DCT_AC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseIncludes.h"
 #include <numeric>
-#include <ctime>
 
 /*uchar chars[4];
 bitset<8> character;
@@ -23,7 +22,7 @@ for (i; i < 32; i++) {
 }
 chars[3] = (uchar)character.to_ulong();*/
 
-int getEdgePixelCount(Mat edgeImage) {
+int getEdgePixelCount(cv::Mat edgeImage) {
 	int pixelCount = 0;
 	for (int i = 0; i < edgeImage.rows; i++) {
 		for (int j = 0; j < edgeImage.cols; j++) {
@@ -40,13 +39,13 @@ float toFloat(bitset<32> bits) {
 	return number;
 }
 
-vector<Point> getEdgeMap(Mat edgeImage) {
-	vector<Point> map;
+vector<cv::Point> getEdgeMap(cv::Mat edgeImage) {
+	vector<cv::Point> map;
 
 	for (int i = 0; i < edgeImage.rows; i++) {
 		for (int j = 0; j < edgeImage.cols; j++) {
 			if ((int)edgeImage.at<uchar>(i, j) == 255) {
-				Point pixel = Point(i, j);
+				cv::Point pixel = cv::Point(i, j);
 				map.push_back(pixel);
 			}
 		}
@@ -66,9 +65,9 @@ void edgeMapIndexesPermutation(vector<int> &map, int stegoKey) {
 	}
 }
 
-double findThreshold(Mat blurredImage, int messageSize, int width) {
+double findThreshold(cv::Mat blurredImage, int messageSize, int width) {
 	int edgePixelCount;
-	Mat edgeImage;
+	cv::Mat edgeImage;
 	double limit = messageSize * 0.1,
 		maxThreshold = 1000,
 		minThreshold = 0,
@@ -110,10 +109,10 @@ int getStegoKey(int edgeMapSize) {
 	return key;
 }
 
-tuple<Mat, int> EDS(Mat coverImage, string secret, int width) {
-	Mat stegoImage = coverImage.clone();
-	Mat pseudoStegoImage = Mat::zeros(coverImage.rows, coverImage.cols, CV_8UC1);
-	Mat edgeImage, maxEdgeImage, maskedImage;
+tuple<cv::Mat, int> EDS(cv::Mat coverImage, string secret, int width) {
+	cv::Mat stegoImage = coverImage.clone();
+	cv::Mat pseudoStegoImage = cv::Mat::zeros(coverImage.rows, coverImage.cols, CV_8UC1);
+	cv::Mat edgeImage, maxEdgeImage, maskedImage;
 
 	vector<int> secretBits;
 	int augmentedSecretSize = 4 + secret.size();
@@ -131,13 +130,12 @@ tuple<Mat, int> EDS(Mat coverImage, string secret, int width) {
 		}
 	}
 
-	bitwise_and(coverImage, 252, maskedImage);
+	cv::bitwise_and(coverImage, 252, maskedImage);
 	//augmentedSecretSize * 8?
 	float t_h = findThreshold(maskedImage, augmentedSecretSize * 8, width);
-	Canny(maskedImage, edgeImage, t_h, t_h * 0.4, width);
-	imwrite("edgeImage.png", edgeImage);
+	cv::Canny(maskedImage, edgeImage, t_h, t_h * 0.4, width);
 	//generate edgeMap
-	vector<Point> edgeMap = getEdgeMap(edgeImage);
+	vector<cv::Point> edgeMap = getEdgeMap(edgeImage);
 	size_t edgeMapSize = edgeMap.size();
 	vector<int> edgeMapIndexes(edgeMapSize);
 	iota(edgeMapIndexes.begin(), edgeMapIndexes.end(), 0);
@@ -151,7 +149,7 @@ tuple<Mat, int> EDS(Mat coverImage, string secret, int width) {
 	int bitIndex = 0;
 	uchar* pixelPtr;
 	for (i = 0; i < edgeMapSize, bitIndex < secretBits.size(); i++) {
-		Point pixelLocation = edgeMap[edgeMapIndexes[i]];
+		cv::Point pixelLocation = edgeMap[edgeMapIndexes[i]];
 		pixelPtr = stegoImage.ptr<uchar>(pixelLocation.x, pixelLocation.y);
 		bitset<8> pixelBits = bitset<8>(pixelPtr[0]);
 
@@ -161,7 +159,7 @@ tuple<Mat, int> EDS(Mat coverImage, string secret, int width) {
 		pixelPtr[0] = static_cast<uchar>(pixelBits.to_ulong());
 		bitIndex += 2;
 	}
-	Canny(maskedImage, maxEdgeImage, 0, 0, 3);
+	cv::Canny(maskedImage, maxEdgeImage, 0, 0, 3);
 	union
 	{
 		float input;
@@ -208,15 +206,15 @@ tuple<Mat, int> EDS(Mat coverImage, string secret, int width) {
 		}
 		j = 0;
 	}
-	return tuple<Mat, int>(stegoImage, stegoKey);
+	return tuple<cv::Mat, int>(stegoImage, stegoKey);
 }
 
-void EDSdisembed(Mat stegoImage, int stegoKey) {
+void EDSdisembed(cv::Mat stegoImage, int stegoKey) {
 
-	Mat edgeImage, maxEdgeImage, maskedImage;
+	cv::Mat edgeImage, maxEdgeImage, maskedImage;
 
-	bitwise_and(stegoImage, 252, maskedImage);
-	Canny(maskedImage, maxEdgeImage, 0, 0, 3);
+	cv::bitwise_and(stegoImage, 252, maskedImage);
+	cv::Canny(maskedImage, maxEdgeImage, 0, 0, 3);
 
 	bitset<32> thresholdBits, widthBits;
 	uchar* pixelPtr;
@@ -254,15 +252,12 @@ void EDSdisembed(Mat stegoImage, int stegoKey) {
 		j = 0;
 	}
 
-	cout << "th " << thresholdBits << endl;
-	cout << "w " << widthBits << endl;
-
 	float t_h = toFloat(thresholdBits);
 	float width = toFloat(widthBits);
 
-	Canny(maskedImage, edgeImage, t_h, 0.4*t_h, width);
+	cv::Canny(maskedImage, edgeImage, t_h, 0.4*t_h, width);
 
-	vector<Point> edgeMap = getEdgeMap(edgeImage);
+	vector<cv::Point> edgeMap = getEdgeMap(edgeImage);
 	size_t edgeMapSize = edgeMap.size();
 	vector<int> edgeMapIndexes(edgeMapSize);
 	iota(edgeMapIndexes.begin(), edgeMapIndexes.end(), 0);
@@ -274,7 +269,7 @@ void EDSdisembed(Mat stegoImage, int stegoKey) {
 	bitset<32> messageLengthBits;
 	index = 0;
 	for (i = 0; i < 16; i++) {
-		Point pixelLocation = edgeMap[edgeMapIndexes[i]];
+		cv::Point pixelLocation = edgeMap[edgeMapIndexes[i]];
 		pixelPtr = stegoImage.ptr<uchar>(pixelLocation.x, pixelLocation.y);
 		bitset<8> pixelBits = bitset<8>(pixelPtr[0]);
 
@@ -285,7 +280,7 @@ void EDSdisembed(Mat stegoImage, int stegoKey) {
 	vector<int> messageBits;
 	messageLength = messageLengthBits.to_ulong();
 	for (i; i < (messageLength + 4) * 4; i++) {
-		Point pixelLocation = edgeMap[edgeMapIndexes[i]];
+		cv::Point pixelLocation = edgeMap[edgeMapIndexes[i]];
 		pixelPtr = stegoImage.ptr<uchar>(pixelLocation.x, pixelLocation.y);
 		bitset<8> pixelBits = bitset<8>(pixelPtr[0]);
 
@@ -302,4 +297,5 @@ void EDSdisembed(Mat stegoImage, int stegoKey) {
 		cout << (uchar)letter.to_ulong();
 		letter = bitset<8>(0);
 	}
+	cout << endl;
 }

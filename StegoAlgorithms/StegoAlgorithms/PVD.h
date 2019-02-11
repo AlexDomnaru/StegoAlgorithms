@@ -88,7 +88,6 @@ tuple<int, int> getPixelValues(int g_i1, int g_i2, double m, bool isOdd) {
 	return tuple<int, int>(g_i1_prime, g_i2_prime);
 }
 
-ofstream fout3("helper.txt");
 cv::Mat PVDembed(cv::Mat coverImage, string secret, int quantTableFlag) {
 	initializeQuantizationTable(quantTableFlag);
 	cv::Mat stegoImage = coverImage.clone();

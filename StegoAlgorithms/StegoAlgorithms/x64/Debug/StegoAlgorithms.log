@@ -3,9 +3,9 @@ c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\lsb.h(12): warning
 c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(61): warning C4244: 'return': conversion from 'double' to 'int', possible loss of data
 c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(78): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(79): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(100): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(136): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(139): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(99): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(135): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\pvd.h(138): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
 c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(118): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(135): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 c:\users\alex\stegoalgorithms\stegoalgorithms\stegoalgorithms\eds.h(144): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
